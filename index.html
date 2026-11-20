@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#171717" />
+  <title>YEMENI FIT — 3D Fashion Showroom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loader-mark">YF</div>
+    <p>PREPARING YOUR SHOWROOM</p>
+    <span class="loader-line"><i></i></span>
+  </div>
+
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Yemeni Fit home">
+      <span class="brand-symbol">YF</span>
+      <span><b>YEMENI FIT</b><small>YOUR STYLE. YOUR FIT. YOUR WORLD.</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="#showroom">SHOWROOM</a>
+      <a href="#collections">COLLECTIONS</a>
+      <a href="#stylist">OUTFIT BUILDER</a>
+    </nav>
+    <button class="cart-trigger" id="cartTrigger" aria-label="Open shopping bag">
+      BAG <span id="cartCount">0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero-strip">
+      <div><span class="eyebrow">THE MEN'S EDIT · 2026</span><h1>Wear your <em>presence.</em></h1></div>
+      <p>Explore the collection in an immersive<br>digital showroom.</p>
+    </section>
+
+    <section class="showroom-section" id="showroom">
+      <div class="showroom-heading">
+        <div><span class="eyebrow">01 / THE EXPERIENCE</span><h2>Enter the showroom</h2></div>
+        <div class="scene-tools">
+          <button class="tool-btn active" id="orbitBtn">EXPLORE 3D</button>
+          <button class="tool-btn" id="resetViewBtn">RESET VIEW ↗</button>
+        </div>
+      </div>
+      <div class="showroom-frame">
+        <div id="threeCanvas" class="three-canvas" aria-label="Interactive 3D fashion showroom"></div>
+        <div class="scene-label label-left"><span class="dot"></span> LIVE 3D SHOWROOM</div>
+        <div class="scene-hint">DRAG TO ROTATE · SCROLL TO ZOOM · SELECT A GARMENT</div>
+        <div class="section-tags">
+          <button data-section="shirts" class="section-tag selected">01&nbsp; T-SHIRTS</button>
+          <button data-section="pants" class="section-tag">02&nbsp; PANTS</button>
+        </div>
+        <div class="scene-product-card" id="productCard">
+          <button class="close-card" id="closeProduct" aria-label="Close product details">×</button>
+          <span class="eyebrow" id="productCategory">SELECTED PIECE</span>
+          <h3 id="productName">Choose a garment</h3>
+          <div class="product-price" id="productPrice">—</div>
+          <p id="productDescription">Select a T-shirt or pants on the rails to inspect the piece.</p>
+          <div class="option-label">SIZE</div>
+          <div class="size-options" id="sizeOptions">
+            <button>S</button><button class="active">M</button><button>L</button><button>XL</button>
+          </div>
+          <div class="option-label">COLOR</div>
+          <div class="color-options" id="colorOptions"></div>
+          <button class="primary-btn full" id="tryOnBtn">TRY ON THE AVATAR ↗</button>
+          <button class="secondary-btn full" id="addToCartBtn">ADD TO BAG</button>
+        </div>
+        <div class="scene-status" id="sceneStatus">Drag the scene to explore</div>
+      </div>
+      <div class="showroom-foot"><span>DESIGNED IN YEMEN</span><span>MOVE WITH CONFIDENCE&nbsp; · &nbsp;01—02</span></div>
+    </section>
+
+    <section class="collections-section" id="collections">
+      <div class="section-heading"><div><span class="eyebrow">02 / THE COLLECTION</span><h2>Two essentials. Endless combinations.</h2></div><p>Considered silhouettes, versatile tones<br>and everyday refinement.</p></div>
+      <div class="collection-grid">
+        <article class="collection-tile shirt-tile">
+          <div class="tile-number">01</div><div class="tile-copy"><span>THE DAILY UNIFORM</span><h3>T-Shirts</h3><button data-jump="shirts">EXPLORE PIECES ↗</button></div>
+        </article>
+        <article class="collection-tile pants-tile">
+          <div class="tile-number">02</div><div class="tile-copy"><span>BUILT TO MOVE</span><h3>Pants</h3><button data-jump="pants">EXPLORE PIECES ↗</button></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="stylist-section" id="stylist">
+      <div class="section-heading"><div><span class="eyebrow">03 / PERSONAL STYLING</span><h2>Build your look.</h2></div><p>Put together a combination<br>that feels unmistakably yours.</p></div>
+      <div class="stylist-layout">
+        <div class="avatar-preview">
+          <div class="avatar-caption">YOUR DIGITAL FITTING ROOM</div>
+          <div class="avatar-mini" id="avatarMini"><div class="mini-head"></div><div class="mini-body" id="miniShirt"></div><div class="mini-pants" id="miniPants"></div><div class="mini-leg left"></div><div class="mini-leg right"></div></div>
+          <div class="avatar-controls"><button id="avatarRotate">ROTATE 360° ↻</button><button id="resetOutfit">RESET OUTFIT</button></div>
+          <p class="avatar-note">Preview mannequin is a procedural 3D fallback. Add your licensed rigged Yemeni male GLB model for production fitting.</p>
+        </div>
+        <div class="builder-panel">
+          <div class="builder-row"><div><span class="eyebrow">UPPER BODY</span><h3 id="chosenShirt">No T-shirt selected</h3></div><button class="text-action" id="removeShirt">REMOVE ×</button></div>
+          <div class="builder-row"><div><span class="eyebrow">LOWER BODY</span><h3 id="chosenPants">No pants selected</h3></div><button class="text-action" id="removePants">REMOVE ×</button></div>
+          <div class="builder-summary"><span>YOUR OUTFIT TOTAL</span><strong id="outfitTotal">$0.00</strong></div>
+          <button class="primary-btn full" id="addOutfitBtn">ADD COMPLETE OUTFIT TO BAG ↗</button>
+          <button class="secondary-btn full" id="saveOutfitBtn">♡ SAVE THIS COMBINATION</button>
+          <div class="saved-message" id="savedMessage"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer><a class="brand footer-brand" href="#"><span class="brand-symbol">YF</span><span><b>YEMENI FIT</b><small>YOUR STYLE. YOUR FIT. YOUR WORLD.</small></span></a><span>© 2026 YEMENI FIT. ALL RIGHTS RESERVED.</span><span>MADE FOR YOUR EVERYDAY.</span></footer>
+
+  <div class="cart-overlay" id="cartOverlay">
+    <div class="cart-drawer">
+      <div class="cart-header"><div><span class="eyebrow">YOUR SELECTION</span><h2>Shopping bag</h2></div><button id="closeCart" class="close-card">×</button></div>
+      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-bottom"><div><span>SUBTOTAL</span><strong id="cartSubtotal">$0.00</strong></div><button id="checkoutBtn" class="primary-btn full">CONTINUE TO CHECKOUT ↗</button><p>Demo checkout — no payment is processed.</p></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script type="module" src="./script.js"></script>
+</body>
+</html>
